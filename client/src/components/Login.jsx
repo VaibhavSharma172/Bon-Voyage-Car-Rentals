@@ -1,76 +1,3 @@
-// import React from 'react'
-// import { useAppContext } from '../context/AppContext';
-// import toast from 'react-hot-toast';
-
-// const Login = () => {
-
-//     const {setShowLogin, axios, setToken, navigate} = useAppContext()
-
-//     const [state, setState] = React.useState("login");
-//     const [name, setName] = React.useState("");
-//     const [email, setEmail] = React.useState("");
-//     const [password, setPassword] = React.useState("");
-
-//     const onSubmitHandler = async (event)=>{
-//         try {
-//             event.preventDefault();
-//             const {data} = await axios.post(`/api/user/${state}`, {name, email, password})
-
-//             if (data.success) {
-//                 navigate('/')
-//                 setToken(data.token)
-//                 localStorage.setItem('token', data.token)
-//                 setShowLogin(false)
-//             }else{
-//                 toast.error(data.message)
-//             }
-
-//         } catch (error) {
-//             toast.error(error.message)
-//         }
-        
-//     }
-
-//   return (
-//     <div onClick={()=> setShowLogin(false)} className='fixed top-0 bottom-0 left-0 right-0 z-100 flex items-center text-sm text-gray-600 bg-ink/50'>
-
-//       <form onSubmit={onSubmitHandler} onClick={(e)=>e.stopPropagation()} className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] rounded-lg shadow-xl border border-gray-200 bg-white">
-//             <p className="text-2xl font-medium m-auto">
-//                 <span className="text-primary">User</span> {state === "login" ? "Login" : "Sign Up"}
-//             </p>
-//             {state === "register" && (
-//                 <div className="w-full">
-//                     <p>Name</p>
-//                     <input onChange={(e) => setName(e.target.value)} value={name} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" type="text" required />
-//                 </div>
-//             )}
-//             <div className="w-full ">
-//                 <p>Email</p>
-//                 <input onChange={(e) => setEmail(e.target.value)} value={email} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" type="email" required />
-//             </div>
-//             <div className="w-full ">
-//                 <p>Password</p>
-//                 <input onChange={(e) => setPassword(e.target.value)} value={password} placeholder="type here" className="border border-gray-200 rounded w-full p-2 mt-1 outline-primary" type="password" required />
-//             </div>
-//             {state === "register" ? (
-//                 <p>
-//                     Already have account? <span onClick={() => setState("login")} className="text-primary cursor-pointer">click here</span>
-//                 </p>
-//             ) : (
-//                 <p>
-//                     Create an account? <span onClick={() => setState("register")} className="text-primary cursor-pointer">click here</span>
-//                 </p>
-//             )}
-//             <button className="bg-primary hover:bg-primary-dull transition-all text-white w-full py-2 rounded-md cursor-pointer">
-//                 {state === "register" ? "Create Account" : "Login"}
-//             </button>
-//         </form>
-//     </div>
-//   )
-// }
-
-// export default Login
-
 import React from "react";
 import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
@@ -88,21 +15,30 @@ const Login = () => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [role, setRole] = React.useState("user");
   const [loading, setLoading] = React.useState(false);
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
-
     if (loading) return;
-
     try {
       setLoading(true);
+      // const { data } = await axios.post(`/api/user/${state}`, {
+      //   name,
+      //   email,
+      //   password,
+      // });
 
-      const { data } = await axios.post(`/api/user/${state}`, {
-        name,
-        email,
+      const payload = {
+          email,
         password,
-      });
+        ...(state === "register" ? { name, role } : {}),
+      };
+
+      const { data } = await axios.post(
+        `/api/user/${state}`,
+        payload
+      );
 
       if (!data.success) {
         toast.error(data.message);
@@ -113,11 +49,9 @@ const Login = () => {
       setToken(data.token);
 
       setShowLogin(false);
-
       // Fetch the logged-in user's data so role/isOwner
       // is immediately available.
     //   await fetchUser();
-
       navigate("/");
     } catch (error) {
       toast.error(
@@ -138,12 +72,13 @@ const Login = () => {
     setName("");
     setEmail("");
     setPassword("");
+    setRole("user");
   };
 
   return (
     <div
       onClick={() => setShowLogin(false)}
-      className="fixed inset-0 z-100 flex items-center bg-[#0B0B0B]/75 px-4"
+      className="fixed inset-0 z-1000 flex items-center bg-[#0B0B0B]/75 px-4"
     >
       <form
         onSubmit={onSubmitHandler}
@@ -163,6 +98,7 @@ const Login = () => {
         </div>
 
         {state === "register" && (
+          <>
           <div className="w-full">
             <label className="mb-1 block font-medium">Name</label>
             <input
@@ -174,6 +110,33 @@ const Login = () => {
               required
             />
           </div>
+
+           <div className="w-full">
+              <label className="mb-1 block font-medium">
+                I want to
+              </label>
+
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-full rounded-md border border-gray-300 bg-white p-2.5 outline-none focus:border-[#4F46E5]"
+                required
+              >
+                <option value="user">
+                  Rent a car
+                </option>
+                <option value="owner">
+                  List my car for rent
+                </option>
+              </select>
+
+              <p className="mt-1 text-xs text-gray-500">
+                {role === "owner"
+                  ? "You'll be able to list cars and manage bookings."
+                  : "You'll be able to browse cars and make bookings."}
+              </p>
+            </div>
+            </>
         )}
 
         <div className="w-full">

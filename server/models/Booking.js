@@ -6,17 +6,12 @@ const bookingSchema = new mongoose.Schema(
     car: { type: ObjectId, ref: "Car", required: true },
     user: { type: ObjectId, ref: "User", required: true },
     owner: { type: ObjectId, ref: "User", required: true },
-    pickupLocation: { type: String, required: true, trim: true},
-    dropoffLocation: { type: String,required: true, trim: true},
+    pickupLocation: { type: String, required: true, trim: true },
+    dropoffLocation: { type: String, required: true, trim: true },
     pickupDate: { type: Date, required: true },
     returnDate: { type: Date, required: true },
-    pricePerDay: {type: Number,required: true, min: 0},
-
-    totalPrice: {
-      type: Number,
-      required: true,
-      min: 0
-    },
+    pricePerDay: { type: Number, required: true, min: 0 },
+    totalPrice: {type: Number, required: true, min: 0},
     status: {
       type: String,
       enum: ["pending", "confirmed", "cancelled", "completed"],
@@ -29,6 +24,24 @@ const bookingSchema = new mongoose.Schema(
     },
     paymentId: {
       type: String,
+      default: null,
+    },
+    paymentStatus: {
+      type: String,
+      enum: ["unpaid", "paid", "failed"],
+      default: "unpaid",
+    },
+    paymentMethod: {
+      type: String,
+      enum: ["card", "upi", "netbanking"],
+      default: null,
+    },
+    paymentReference: {
+      type: String,
+      default: null,
+    },
+    paidAt: {
+      type: Date,
       default: null,
     },
   },

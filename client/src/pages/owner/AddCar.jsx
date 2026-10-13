@@ -102,10 +102,12 @@ const AddCar = () => {
           <div className='flex flex-col w-full'>
             <label>Category</label>
             <select onChange={e=> setCar({...car, category: e.target.value})} value={car.category} className='px-3 py-2 mt-1 border border-borderColor rounded-md outline-none'>
-              <option value="">Select a category</option>
               <option value="Sedan">Sedan</option>
               <option value="SUV">SUV</option>
               <option value="Van">Van</option>
+              <option value="Van">Sports</option>
+              <option value="Van">Electric</option>
+              <option value="Van">Luxury</option>
             </select>
           </div>
         </div>
@@ -115,7 +117,6 @@ const AddCar = () => {
           <div className='flex flex-col w-full'>
             <label>Transmission</label>
             <select onChange={e=> setCar({...car, transmission: e.target.value})} value={car.transmission} className='px-3 py-2 mt-1 border border-borderColor rounded-md outline-none'>
-              <option value="">Select a transmission</option>
               <option value="Automatic">Automatic</option>
               <option value="Manual">Manual</option>
               <option value="Semi-Automatic">Semi-Automatic</option>
@@ -124,7 +125,6 @@ const AddCar = () => {
           <div className='flex flex-col w-full'>
             <label>Fuel Type</label>
             <select onChange={e=> setCar({...car, fuel_type: e.target.value})} value={car.fuel_type} className='px-3 py-2 mt-1 border border-borderColor rounded-md outline-none'>
-              <option value="">Select a fuel type</option>
               <option value="Gas">Gas</option>
               <option value="Diesel">Diesel</option>
               <option value="Petrol">Petrol</option>
@@ -142,11 +142,15 @@ const AddCar = () => {
          <div className='flex flex-col w-full'>
             <label>Location</label>
             <select onChange={e=> setCar({...car, location: e.target.value})} value={car.location} className='px-3 py-2 mt-1 border border-borderColor rounded-md outline-none'>
-              <option value="">Select a location</option>
-              <option value="New York">New York</option>
-              <option value="Los Angeles">Los Angeles</option>
-              <option value="Houston">Houston</option>
-              <option value="Chicago">Chicago</option>
+              <option value="New York">Delhi</option>
+              <option value="Los Angeles">Mumbai</option>
+              <option value="Houston">Kolkata</option>
+              <option value="Chicago">Chennai</option>
+              <option value="Van">Bengaluru</option>
+              <option value="Van">Indore</option>
+              <option value="Van">Goa</option>
+              <option value="Van">Jaipur</option>
+              <option value="Van">Hyderabad</option>
             </select>
          </div>
         {/* Car Description */}

@@ -15,7 +15,7 @@ const generateToken = (userId) => {
 // Register User
 export const registerUser = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, role = "user" } = req.body;
 
         if (!name?.trim() || !email?.trim() || !password) {
             return res.status(400).json({
@@ -30,6 +30,12 @@ export const registerUser = async (req, res) => {
                 message: "Password must be at least 8 characters",
             });
         }
+        if (!["owner", "user"].includes(role)) {
+  return res.status(400).json({
+    success: false,
+    message: "Invalid role selected",
+  });
+}
 
         const normalizedEmail = email.trim().toLowerCase();
 
@@ -50,6 +56,7 @@ export const registerUser = async (req, res) => {
             name: name.trim(),
             email: normalizedEmail,
             password: hashedPassword,
+            role,
         });
 
         const token = generateToken(user._id.toString());

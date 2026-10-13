@@ -96,7 +96,7 @@ const ManageCars = () => {
                   <span className={`px-3 py-1 rounded-full text-xs ${car.isAvaliable ? 'bg-accent/15 text-accent-dull' : 'bg-primary/10 text-primary'}`}>
                     {car.isAvaliable ? "Available" : "Unavailable" }
                   </span>
-                </td>
+                </td> 
 
                 <td className='flex items-center p-3'>
 
